@@ -14,13 +14,14 @@ function Login() {
         email,
         password,
       });
-      localStorage.setItem("access_token", res.data.access_token);
-      setMessage("Login successful!");
+      localStorage.setItem("token", res.data.access_token);
+      window.location.href = "/dashboard";
       navigate("/"); // Redirect to dashboard later
     } catch (err) {
       setMessage(err.response?.data?.message || "Login failed");
     }
   };
+  
 
   // Inline styles
   const containerStyle = {
@@ -46,11 +47,7 @@ function Login() {
     outline: "none",
   };
 
-  const inputFocusStyle = {
-    borderColor: "#28a745",
-    boxShadow: "0 0 5px rgba(40,167,69,0.3)",
-  };
-
+ 
   const buttonStyle = {
     width: "100%",
     padding: "12px",
