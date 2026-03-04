@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FarmModule from "./FarmModule";
+import CropsModule from "./CropsModule";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("farm");
@@ -31,7 +32,7 @@ function Dashboard() {
 
   const renderContent = () => {
     if (activeTab === "farm") return <FarmModule />;
-    if (activeTab === "crops") return <h2>Crops Module - Coming Soon</h2>;
+    if (activeTab === "crops") return <CropsModule />;
     if (activeTab === "expenses") return <h2>Expenses Module - Coming Soon</h2>;
     if (activeTab === "mandi") return <h2>Mandi Module - Coming Soon</h2>;
     if (activeTab === "crop advisory") return <h2>Crop Advisory Module - Coming Soon</h2>;
