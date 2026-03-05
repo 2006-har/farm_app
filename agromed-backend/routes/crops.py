@@ -63,13 +63,21 @@ def update_crop(crop_id):
 
     return jsonify({"message": "Crop updated successfully"})
 
-
-# Delete a crop
+# Delete a crop safely
 @crops_bp.route("/delete/<int:crop_id>", methods=["DELETE"])
 def delete_crop(crop_id):
     cursor = mysql.connection.cursor()
-    cursor.execute("DELETE FROM crops WHERE crop_id=%s", (crop_id,))
-    mysql.connection.commit()
-    cursor.close()
-
-    return jsonify({"message": "Crop deleted successfully"})
+    try:
+        # Step 1: Delete any dependent crop advisories
+        cursor.execute("DELETE FROM crop_advisory WHERE crop_id=%s", (crop_id,))
+        
+        # Step 2: Delete the crop itself
+        cursor.execute("DELETE FROM crops WHERE crop_id=%s", (crop_id,))
+        
+        mysql.connection.commit()
+        return jsonify({"message": "Crop and related advisories deleted successfully"}), 200
+    except Exception as e:
+        mysql.connection.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
